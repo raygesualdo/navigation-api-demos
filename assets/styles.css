@@ -52,6 +52,10 @@ pre code {
   margin: -7px -16px;
 }
 
+[id="consoleLog"] {
+  white-space: pre-wrap;
+}
+
 .forms {
   display: grid;
   grid-template-columns: repeat(2, max-content);

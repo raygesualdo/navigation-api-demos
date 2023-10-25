@@ -1,0 +1,93 @@
+:root {
+  --vertical-spacing: var(--size-5);
+}
+
+body {
+  padding: var(--size-3);
+}
+
+h1 {
+  font-weight: var(--font-weight-5);
+  font-size: var(--font-size-5);
+}
+
+button {
+  --_size: var(--font-size-0);
+}
+
+form {
+  margin-block: var(--vertical-spacing);
+  max-inline-size: max-content;
+  padding: var(--size-3);
+  border-radius: var(--radius-3);
+  box-shadow: var(--shadow-4);
+  border: var(--border-size-1) solid var(--gray-8);
+
+  & p {
+    margin-block-start: 0;
+    margin-block-end: var(--size-2);
+  }
+
+  & input {
+    margin-block-end: var(--size-3);
+  }
+}
+
+.links {
+  margin-block-start: var(--vertical-spacing);
+}
+
+.container {
+  margin-block: var(--vertical-spacing);
+}
+
+.right-pane {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50vw;
+}
+
+pre code {
+  margin: -7px -16px;
+}
+
+.forms {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: var(--size-4);
+}
+
+details {
+  margin-block: var(--vertical-spacing);
+  max-inline-size: max-content;
+  overflow: hidden;
+}
+
+[id="top"],
+[id="bottom"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.timestamp {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  font-size: var(--font-size-0);
+  padding: var(--size-1);
+  font-variant-numeric: tabular-nums;
+  background-color: var(--surface-1);
+}
+
+label:has(> input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  gap: var(--size-2);
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🧭 Navigation API Demo #5</title>
+    <link rel="stylesheet" href="https://unpkg.com/open-props" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props/buttons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/base16/cupertino.min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" />
+  </head>
+  <link rel="stylesheet" href="./assets/styles.css" />
+  <body>
+    <a id="top"></a>
+    <h1>🧭 Navigation API Demo #5</h1>
+    <ul class="links">
+      <li><a href="/pages/1">Page #1</a></li>
+      <li><a href="/pages/2">Page #2</a></li>
+      <li><a href="/pages/3">Page #3</a></li>
+      <li><a href="/pages/4">Page #4, Redirects to Page #1</a></li>
+    </ul>
+    <div class="container">
+      <button onclick="navigation.navigate('/pages/1')">Go to Page 1</button>
+      <button onclick="navigation.navigate('/pages/2')">Go to Page 2</button>
+      <button onclick="navigation.navigate('/pages/3')">Go to Page 3</button>
+    </div>
+    <div class="container">
+      <button onclick="navigation.navigate('/pages/1', { history: 'replace'})">
+        Sneak to Page 1
+      </button>
+      <button onclick="navigation.navigate('/pages/2', { history: 'replace'})">
+        Sneak to Page 2
+      </button>
+      <button onclick="navigation.navigate('/pages/3', { history: 'replace'})">
+        Sneak to Page 3
+      </button>
+    </div>
+    <div class="container">
+      <label><input type="checkbox" name="progress" id="progress" />Enable progress bar</label>
+    </div>
+    <div class="container">
+      <button onclick="navigation.navigate('/demo05.html')">Reset</button>
+    </div>
+    <div id="content"></div>
+    <a id="bottom"></a>
+
+    <script id="mainScript">
+      window.navigation.addEventListener("navigate", (event) => {
+        if (shouldNotIntercept(event)) return
+        const { pathname } = new URL(event.destination.url)
+        if (pathname === "/pages/4") navigation.navigate("/pages/1", { history: "replace" })
+        if (pathname.includes("/pages/")) {
+          event.intercept({
+            async handler() {
+              if (pathname === "/pages/2") await delay(500)
+              if (pathname === "/pages/3") {
+                document.querySelector("#content").innerHTML = "<p>Loading...<p>"
+                await delay(5_000)
+              }
+              const response = await fetch(pathname + ".html")
+              const html = await response.text()
+              document.querySelector("#content").innerHTML = html
+            },
+          })
+        }
+      })
+
+      function shouldNotIntercept(navigationEvent) {
+        return (
+          !navigationEvent.canIntercept ||
+          navigationEvent.hashChange ||
+          navigationEvent.downloadRequest ||
+          navigationEvent.formData
+        )
+      }
+
+      async function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
+      }
+    </script>
+    <script src="./assets/show-source-code.js" type="module"></script>
+    <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+    <script src="./assets/progress-bar.js" type="module"></script>
+    <script src="./assets/timestamp.js"></script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚣 Navigation API Demo #1</title>
+    <link rel="stylesheet" href="https://unpkg.com/open-props" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props/buttons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/base16/cupertino.min.css"
+    />
+  </head>
+  <link rel="stylesheet" href="./assets/styles.css" />
+  <body>
+    <a id="top"></a>
+    <h1>🚣 Navigation API Demo #1</h1>
+    <ul class="links">
+      <li><a href="/fake-page-1">Fake Page #1</a></li>
+      <li><a href="/fake-page-2">Fake Page #2</a></li>
+      <li><a href="/fake-page-3">Fake Page #3</a></li>
+      <li><a href="/fake-page-4" download="some-file.pdf">Download link</a></li>
+      <li><a href="#top">Go to top</a></li>
+      <li><a href="#bottom">Go to bottom</a></li>
+    </ul>
+    <div class="forms">
+      <form>
+        <p><strong>GET Form</strong></p>
+        <input type="text" name="name" id="name" placeholder="Name" value="Ray" />
+        <div><button>Submit</button></div>
+      </form>
+      <form method="POST" action="/api/sign-up">
+        <p><strong>POST Form</strong></p>
+        <input type="text" name="name" id="name" placeholder="Name" value="Raymond" />
+        <div><button>Submit</button></div>
+      </form>
+    </div>
+    <button onclick="navigation.reload()">Reload</button>
+    <button onclick="history.pushState(null, null, '/history.pushState')">history.pushState</button>
+    <div class="right-pane">
+      <div class="container">
+        <p><code>NavigationEvent</code></p>
+      </div>
+      <div class="container">
+        <pre id="consoleLog"></pre>
+      </div>
+    </div>
+    <a id="bottom"></a>
+
+    <script>
+      window.navigation.addEventListener("navigate", (event) => {
+        const eventDetails = JSON.stringify(
+          {
+            canIntercept: event.canIntercept,
+            destination: {
+              sameDocument: event.destination.sameDocument,
+              url: event.destination.url,
+            },
+            downloadRequest: event.downloadRequest,
+            formData: event.formData
+              ? Object.fromEntries(event.formData.entries())
+              : event.formData,
+            hashChange: event.hashChange,
+            info: event.info,
+            navigationType: event.navigationType,
+            signal: "AbortSignal",
+            userInitiated: event.userInitiated,
+          },
+          null,
+          2
+        )
+        console.log(event)
+        document.querySelector("#consoleLog").innerHTML = eventDetails
+        event.preventDefault()
+      })
+    </script>
+    <script src="./assets/timestamp.js"></script>
+  </body>
+</html>

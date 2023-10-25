@@ -1,0 +1,12 @@
+{
+  "name": "navigation-api-demos",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "serve": "serve"
+  },
+  "devDependencies": {
+    "@types/dom-navigation": "^1.0.2",
+    "serve": "^14.2.1"
+  }
+}

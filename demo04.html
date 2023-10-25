@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🛥️ Navigation API Demo #4</title>
+    <link rel="stylesheet" href="https://unpkg.com/open-props" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props/normalize.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/open-props/buttons.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/base16/cupertino.min.css"
+    />
+  </head>
+  <link rel="stylesheet" href="./assets/styles.css" />
+  <body>
+    <a id="top"></a>
+    <h1>🛥️ Navigation API Demo #4</h1>
+    <ul class="links">
+      <li><a href="/pages/1">Page #1</a></li>
+      <li><a href="/pages/2">Page #2</a></li>
+      <li><a href="/pages/3">Page #3</a></li>
+      <li><a href="/fake-page-4" download="some-file.pdf">Download link</a></li>
+      <li><a href="#top">Go to top</a></li>
+      <li><a href="#bottom">Go to bottom</a></li>
+    </ul>
+    <div class="container">
+      <button onclick="navigation.navigate('/demo04.html')">Reset</button>
+    </div>
+    <div id="content"></div>
+    <a id="bottom"></a>
+
+    <script id="mainScript">
+      window.navigation.addEventListener("navigate", (event) => {
+        if (shouldNotIntercept(event)) return
+        const { pathname } = new URL(event.destination.url)
+        if (pathname.includes("/pages/")) {
+          event.intercept({
+            async handler() {
+              const response = await fetch(pathname)
+              const html = await response.text()
+              document.querySelector("#content").innerHTML = html
+            },
+          })
+        }
+      })
+
+      function shouldNotIntercept(navigationEvent) {
+        return (
+          !navigationEvent.canIntercept ||
+          navigationEvent.hashChange ||
+          navigationEvent.downloadRequest ||
+          navigationEvent.formData
+        )
+      }
+    </script>
+    <script src="./assets/show-source-code.js" type="module"></script>
+    <script src="./assets/timestamp.js"></script>
+  </body>
+</html>
